@@ -1,8 +1,6 @@
 import { MongoClient } from "mongodb";
 
-const cliente = new MongoClient(
-  "mongodb+srv://pense:tiamat21@socketio.thy8z1s.mongodb.net/?retryWrites=true&w=majority&appName=socketio"
-);
+const cliente = new MongoClient(process.env.STRING_CONNECTION);
 
 let documentosColecao, usuariosColecao;
 
