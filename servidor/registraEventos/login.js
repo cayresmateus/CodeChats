@@ -1,5 +1,5 @@
 import { encontrarUsuario } from "../db/usuariosDb.js"
-import autenticarUsuario from "../utils/autenticarusuario.js";
+import autenticarUsuario from "../utils/autenticarUsuario.js";
 import gerarJwt from "../utils/gerarJwt.js";
 
 function registraEventosLogin(socket, io) {
