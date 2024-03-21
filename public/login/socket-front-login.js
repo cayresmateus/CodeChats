@@ -6,8 +6,7 @@ function emitirAutenticarUsuario(dados){
   socket.emit("autenticar_usuario", dados);
 }
 socket.on("autenticacao_sucesso", (token) => {
-  definirCookie("token", token)
-  alert("Usuário autenticado com sucesso");
+  definirCookie("token", token) 
   window.location.href = "/"
 })
 socket.on("autenticacao_erro", ()=> alert("Erro na autenticação"));
