@@ -3,7 +3,7 @@ import {
   encontrarDocumento,
   excluirDocumento,
 } from "../db/documentosDb.js";
-import { adicionarConexao, obterUsuariosDocumento } from "../utils/conexoesDocumentos.js";
+import { adicionarConexao, obterUsuariosDocumento, removerConexao } from "../utils/conexoesDocumentos.js";
 
 function registrarEventosDocumento(socket,io){
   socket.on("selecionar_documento", async ({nomeDocumento, nomeUsuario}, devolverTexto) => {   
@@ -32,7 +32,9 @@ function registrarEventosDocumento(socket,io){
       }
     });
     socket.on("disconnect", () => {
-      console.log(`usuario ${socket.id}`);
+      removerConexao(nomeDocumento,nomeUsuario);
+      const usuariosNoDocumento = obterUsuariosDocumento(nomeDocumento);
+      io.to(nomeDocumento).emit("usuarios_no_documento", usuariosNoDocumento);
     });
   });
 
