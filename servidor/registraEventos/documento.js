@@ -16,23 +16,29 @@ function registrarEventosDocumento(socket,io){
       io.to(nomeDocumento).emit("usuarios_no_documento", usuariosNoDocumento);
       devolverTexto(documento.texto);
     }
+    socket.on("texto_editor", async ({ texto, nomeDocumento }) => {
+      const atualizacao = await atualizaDocumento(nomeDocumento, texto);
+  
+      if (atualizacao.modifiedCount) {
+        socket.to(nomeDocumento).emit("texto_editor_clientes", texto);
+      }
+    });
+  
+    socket.on("excluir_documento", async (nome) => {
+      const resultado = await excluirDocumento(nome);
+  
+      if (resultado.deletedCount) {
+        io.emit("excluir_documento_sucesso", nome);
+      }
+    });
+    socket.on("disconnect", () => {
+      console.log(`usuario ${socket.id}`);
+    });
   });
 
-  socket.on("texto_editor", async ({ texto, nomeDocumento }) => {
-    const atualizacao = await atualizaDocumento(nomeDocumento, texto);
 
-    if (atualizacao.modifiedCount) {
-      socket.to(nomeDocumento).emit("texto_editor_clientes", texto);
-    }
-  });
 
-  socket.on("excluir_documento", async (nome) => {
-    const resultado = await excluirDocumento(nome);
-
-    if (resultado.deletedCount) {
-      io.emit("excluir_documento_sucesso", nome);
-    }
-  });
+  
 }
 
 export default registrarEventosDocumento;
